@@ -1,6 +1,6 @@
 import Layout from "../components/Layout";
 import { useEffect, useState } from "react";
-import { getSupabase } from "./lib/supabase";
+import { getSupabase } from "../lib/supabase";
 
 export default function TimelineAdvanced(){
   const [sessions, setSessions] = useState([]);

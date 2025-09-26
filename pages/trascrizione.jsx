@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import Layout from "../components/Layout";
 import SuggestionBox from "../components/SuggestionBox";
 import ScriptKanban from "../components/ScriptKanban";
-import { transcribeBlob } from "./lib/whisper";
-import { getSupabase } from "./lib/supabase";
+import { transcribeBlob } from "../lib/whisper";
+import { getSupabase } from "../lib/supabase";
 
 export default function Trascrizione() {
   const mediaRef = useRef(null);

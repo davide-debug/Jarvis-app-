@@ -1,5 +1,5 @@
 import Layout from "../components/Layout";
-import { createOutlookTask, createZohoTask } from "./lib/tasks";
+import { createOutlookTask, createZohoTask } from "../lib/tasks";
 
 const customers = [
   { name: "TCP Tuscany Chemical Production", recency: 0.8, engagement: 0.6, sentiment: 0.7, kw: 0.9 },
