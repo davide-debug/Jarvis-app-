@@ -1,3 +1,4 @@
+
 export default function SuggestionBox({ suggestions }) {
   return (
     <div className="bg-gray-900 p-4 rounded-lg">

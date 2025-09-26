@@ -1,3 +1,4 @@
+
 export default function DealCard({ deal, onDragStart }) {
   function handleMail() {
     window.location.href = `mailto:commerciale@${deal.name
@@ -53,24 +54,9 @@ export default function DealCard({ deal, onDragStart }) {
       </div>
 
       <div className="mt-3 flex gap-2">
-        <button
-          onClick={handleMail}
-          className="text-xs px-2 py-1 rounded bg-emerald-600 hover:bg-emerald-500"
-        >
-          Mail
-        </button>
-        <button
-          onClick={handleWhatsApp}
-          className="text-xs px-2 py-1 rounded bg-emerald-700 hover:bg-emerald-600"
-        >
-          WhatsApp
-        </button>
-        <button
-          onClick={handleCall}
-          className="text-xs px-2 py-1 rounded bg-emerald-800 hover:bg-emerald-700"
-        >
-          Chiama
-        </button>
+        <button onClick={handleMail} className="text-xs px-2 py-1 rounded bg-emerald-600 hover:bg-emerald-500">Mail</button>
+        <button onClick={handleWhatsApp} className="text-xs px-2 py-1 rounded bg-emerald-700 hover:bg-emerald-600">WhatsApp</button>
+        <button onClick={handleCall} className="text-xs px-2 py-1 rounded bg-emerald-800 hover:bg-emerald-700">Chiama</button>
       </div>
     </div>
   );
