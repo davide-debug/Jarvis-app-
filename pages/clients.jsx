@@ -1,4 +1,4 @@
-import Layout from "@/components/Layout";
+import Layout from "./components/Layout";
 const items = [
   { name:"TCP Tuscany Chemical Production", sentiment: "positivo", keywords:["5.0","Sabatini"], last:"2025-07-31" },
   { name:"Novareti SPA", sentiment: "neutro", keywords:["bandi","enti pubblici"], last:"2025-07-22" },

@@ -1,4 +1,4 @@
-import Layout from "@/components/Layout";
+import Layout from "./components/Layout";
 import { ResponsiveContainer, BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, AreaChart, Area } from "recharts";
 
 const obiezioni = [{ m:"Mag",count:12 },{ m:"Giu",count:10 },{ m:"Lug",count:14 },{ m:"Ago",count:9 },{ m:"Set",count:16 }];

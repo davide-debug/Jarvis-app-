@@ -1,4 +1,4 @@
-import Layout from "@/components/Layout";
+import Layout from "./components/Layout";
 import Papa from "papaparse";
 import * as XLSX from "xlsx";
 import { useState } from "react";
