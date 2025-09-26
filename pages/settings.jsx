@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Layout from "./components/Layout";
+import Layout from "../components/Layout";
 
 export default function Settings() {
   const [apiKey, setApiKey] = useState("");

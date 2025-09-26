@@ -1,4 +1,4 @@
-import Layout from "./components/Layout";
+import Layout from "../components/Layout";
 import { createOutlookTask, createZohoTask } from "./lib/tasks";
 
 const customers = [
