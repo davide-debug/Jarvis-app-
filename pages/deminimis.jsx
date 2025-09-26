@@ -5,7 +5,6 @@ import { useState } from "react";
 
 export default function DeMinimis(){
   const [rows, setRows] = useState([]);
-
   const onFile = async (e)=>{
     const f = e.target.files?.[0];
     if(!f) return;
@@ -21,7 +20,6 @@ export default function DeMinimis(){
       alert("Carica CSV o Excel.");
     }
   };
-
   return (
     <Layout>
       <div className="max-w-3xl card">

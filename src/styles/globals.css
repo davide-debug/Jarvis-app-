@@ -2,11 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --bg: #0b0f19;
-  --card: #11172a;
-  --muted: #9aa4b2;
-}
 body { @apply bg-slate-950 text-slate-100; }
 .card { @apply bg-slate-900/60 rounded-2xl p-4 shadow-xl; }
 .btn { @apply inline-flex items-center gap-2 rounded-2xl px-4 py-2 bg-sky-600 hover:bg-sky-500 transition; }

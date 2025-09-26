@@ -1,19 +1,23 @@
 import Layout from "@/components/Layout";
-import { useEffect, useState, useRef } from "react";
-
-function useSessions(){
-  const [sessions, setSessions] = useState([]);
-  useEffect(()=>{
-    const s = JSON.parse(localStorage.getItem("JARVIS_SESSIONS")||"[]");
-    setSessions(s);
-  },[]);
-  return [sessions];
-}
+import { useEffect, useState } from "react";
+import { getSupabase } from "@/lib/supabase";
 
 export default function TimelineAdvanced(){
-  const [sessions] = useSessions();
-  const [audioUrl, setAudioUrl] = useState(null);
-  const audioRef = useRef(null);
+  const [sessions, setSessions] = useState([]);
+
+  useEffect(()=>{
+    const load = async ()=>{
+      const sb = getSupabase();
+      if (sb) {
+        const { data, error } = await sb.from("calls").select("id, created_at, duration, transcript, segments ( start_sec, end_sec, text )").order("created_at", { ascending: false });
+        if (!error && data) { setSessions(data); return; }
+      }
+      // fallback localStorage
+      const s = JSON.parse(localStorage.getItem("JARVIS_SESSIONS")||"[]");
+      setSessions(s.map(x=>({ id:x.id, created_at:x.createdAt, duration: x.items?.at(-1)?.end ?? 0, segments: x.items?.map(i=>({start_sec:i.start,end_sec:i.end,text:i.text})) || [] })));
+    };
+    load();
+  },[]);
 
   return (
     <Layout>
@@ -24,14 +28,10 @@ export default function TimelineAdvanced(){
             <div className="card" key={s.id}>
               <div className="flex justify-between items-center">
                 <div className="font-semibold">Sessione {s.id}</div>
-                <div className="badge">{new Date(s.createdAt).toLocaleString()}</div>
+                <div className="badge">{new Date(s.created_at).toLocaleString()}</div>
               </div>
               <div className="text-sm text-slate-300 mt-2 space-y-1">
-                {s.items.map((l,i)=>(<div key={i}>[{l.t}s] {l.text}</div>))}
-              </div>
-              <div className="mt-3">
-                <audio ref={audioRef} controls src={audioUrl || ""} className="w-full" />
-                <div className="text-xs text-slate-400 mt-1">Player audio (demo): collega l’URL della registrazione quando disponibile.</div>
+                {(s.segments||[]).map((l,i)=>(<div key={i}>[{l.start_sec??0}s - {l.end_sec??0}s] {l.text}</div>))}
               </div>
             </div>
           ))}

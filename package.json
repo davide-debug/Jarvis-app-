@@ -1,6 +1,6 @@
 {
-  "name": "jarvis-app-v11",
-  "version": "11.0.0",
+  "name": "jarvis-app-v13",
+  "version": "13.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -18,7 +18,8 @@
     "recharts": "2.12.7",
     "papaparse": "5.4.1",
     "xlsx": "0.18.5",
-    "date-fns": "3.6.0"
+    "date-fns": "3.6.0",
+    "@supabase/supabase-js": "2.45.4"
   },
   "devDependencies": {
     "autoprefixer": "10.4.19",
