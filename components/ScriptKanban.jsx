@@ -1,15 +1,14 @@
-
-export default function ScriptKanban({ steps, currentStep }){
+export default function ScriptKanban({ steps = [], current = 0, onStep }) {
   return (
-    <div className="bg-gray-900 p-4 rounded-lg h-full">
-      <h2 className="text-lg font-semibold mb-2">Copione</h2>
-      <div className="space-y-3">
-        {steps.map((s,i)=>(
-          <div key={i} className={`p-3 rounded border transition ${currentStep===i+1 ? "bg-emerald-600 text-white border-emerald-400 shadow-lg":"bg-gray-800 border-gray-700"}`}>
-            <strong>Step {i+1}:</strong> {s}
-          </div>
-        ))}
-      </div>
+    <div className="grid md:grid-cols-3 gap-4">
+      {steps.map((s, i) => (
+        <div key={i} className={`card ${i === current ? "ring-2 ring-sky-500" : ""}`}>
+          <div className="text-sm opacity-70">Step {i+1}</div>
+          <div className="font-semibold">{s.title}</div>
+          <p className="text-sm text-slate-300 mt-2">{s.hint}</p>
+          <button className="btn mt-3" onClick={() => onStep?.(i)}>Vai</button>
+        </div>
+      ))}
     </div>
   );
 }
