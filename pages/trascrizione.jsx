@@ -6,7 +6,6 @@ import { transcribeBlob } from "@/lib/whisper";
 
 export default function Trascrizione() {
   const mediaRef = useRef(null);
-  const chunks = useRef([]);
   const [rec, setRec] = useState(false);
   const [log, setLog] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
@@ -22,24 +21,32 @@ export default function Trascrizione() {
   const startRec = async () => {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     mediaRef.current = new MediaRecorder(stream);
-    chunks.current = [];
-    mediaRef.current.ondataavailable = e => chunks.current.push(e.data);
-    mediaRef.current.onstop = async () => {
-      const blob = new Blob(chunks.current, { type: "audio/webm" });
-      const apiKey = localStorage.getItem("OPENAI_API_KEY");
-      try {
-        const items = await transcribeBlob(blob, apiKey);
-        const sessionId = Date.now();
-        const session = { id: sessionId, items, createdAt: new Date().toISOString() };
-        const store = JSON.parse(localStorage.getItem("JARVIS_SESSIONS")||"[]");
-        localStorage.setItem("JARVIS_SESSIONS", JSON.stringify([session, ...store]));
-        setLog(items);
-        setSuggestions(["Proponi follow-up via mail", "Fissa recall 24h prima", "Evidenzia incentivo cumulabile"]);
-      } catch (e) {
-        alert(e.message);
+
+    mediaRef.current.ondataavailable = async (e) => {
+      if (e.data && e.data.size > 0) {
+        const apiKey = localStorage.getItem("OPENAI_API_KEY");
+        try {
+          const segs = await transcribeBlob(e.data, apiKey);
+          setLog(prev => [...prev, ...segs]);
+          setSuggestions([
+            "Proponi follow-up via mail",
+            "Fissa recall 24h prima",
+            "Evidenzia incentivo cumulabile"
+          ]);
+          // Salvataggio incrementale in localStorage
+          const sessionId = "live-session";
+          const store = JSON.parse(localStorage.getItem("JARVIS_SESSIONS")||"[]");
+          const updated = [{ id: sessionId, items:[...(log||[]), ...segs], createdAt: new Date().toISOString() }, ...store.filter(s=>s.id!==sessionId)];
+          localStorage.setItem("JARVIS_SESSIONS", JSON.stringify(updated));
+        } catch (err) {
+          console.error("Errore chunk:", err);
+        }
       }
     };
-    mediaRef.current.start();
+
+    // Avvia con chunk ogni 5 secondi
+    const cs = parseInt(localStorage.getItem("CHUNK_SIZE") || "5");
+    mediaRef.current.start(cs * 1000);
     setRec(true);
   };
 
@@ -54,11 +61,11 @@ export default function Trascrizione() {
         <div className="md:col-span-2 card">
           <div className="flex items-center gap-2 mb-3">
             <button className="btn" onClick={rec?stopRec:startRec}>{rec ? "Stop REC" : "Avvia REC"}</button>
-            <span className="badge">{rec ? "Registrazione..." : "Pronto"}</span>
+            <span className="badge">{rec ? "Registrazione in corso (chunk)" : "Pronto"}</span>
           </div>
-          <div className="space-y-2 text-sm">
+          <div className="space-y-2 text-sm max-h-[400px] overflow-auto">
             {log.length===0 ? <div className="text-slate-400">Nessuna trascrizione ancora.</div> :
-              log.map((l,i)=>(<div key={i}><span className="text-slate-400">[{l.t}s]</span> {l.text}</div>))
+              log.map((l,i)=>(<div key={i}><span className="text-slate-400">[{l.start}s - {l.end}s | {l.dur}s]</span> {l.text}</div>))
             }
           </div>
         </div>
