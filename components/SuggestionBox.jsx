@@ -6,7 +6,7 @@ export default function SuggestionBox({ suggestions }) {
         {suggestions.map((s) => (
           <li
             key={s.id}
-            className={\`p-2 rounded \${s.priority === "high" ? "bg-red-600 animate-pulse text-white" : "bg-gray-700"}\`}
+            className={`p-2 rounded ${s.priority === "high" ? "bg-red-600 animate-pulse text-white" : "bg-gray-700"}`}
           >
             {s.text}
           </li>
